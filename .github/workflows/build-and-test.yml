@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - master
+      
 env:
   # Shared variables
   CI_TASK_DIR: ${{ github.workspace }}
