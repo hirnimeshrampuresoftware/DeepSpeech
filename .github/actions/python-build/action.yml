@@ -34,38 +34,41 @@ runs:
   using: "composite"
   steps:
     - run: |
-    - name: Set up QEMU
-      id: qemu
-      uses: docker/setup-qemu-action@v1
-    - name: Build Wheel
-      run: |
-            docker run --rm -v ${{ github.workspace }}:/ws:rw --workdir=/ws \
-            quay.io/pypa/manylinux2014_aarch64 \
-            bash -exc '/opt/python/cp37-cp37m/bin/python -m venv .env && \
-            source .env/bin/activate && \
-            pip install --upgrade pip && \
-            python --version && \
-            pip --version && \
-            python3 -m deepspeech-build && \
-            mkdir -p wheels && \
-            set -xe && \
-            PROJECT_NAME="deepspeech" && \
-            if [ "${{ inputs.build_flavor }}" = "tflite" ]; then
-              PROJECT_NAME="deepspeech-tflite"
-            fi && \
-            source deepspeech-build/bin/activate && \
-            NUMPY_BUILD_VERSION="${{ inputs.numpy_build }}" \
-            NUMPY_DEP_VERSION="${{ inputs.numpy_dep }}" \
-            EXTRA_CFLAGS=${{ inputs.local_cflags }} \
-            EXTRA_LDFLAGS=${{ inputs.local_ldflags }} \
-            EXTRA_LIBS=${{ inputs.local_libs }} \
-              make -C native_client/python/ \
-                TARGET=${{ inputs.target }} \
-                RASPBIAN=${{ inputs.chroot }} \
-                SETUP_FLAGS="--project_name ${PROJECT_NAME}" \
-                bindings-clean bindings && \ 
-            deactivate && \
-            cp native_client/python/dist/*.whl wheels && \
-            make -C native_client/python/ bindings-clean && \
-            deactivate'
+        python3 --version
+        pip3 --version
+        python3 -m pip install virtualenv
+        python3 -m virtualenv deepspeech-build
+      shell: bash
+    - run: |
+        mkdir -p wheels
+      shell: bash
+    - run: |
+        set -xe
+        PROJECT_NAME="deepspeech"
+        if [ "${{ inputs.build_flavor }}" = "tflite" ]; then
+          PROJECT_NAME="deepspeech-tflite"
+        fi
+        OS=$(uname)
+        if [ "${OS}" = "Linux" ]; then
+          source deepspeech-build/bin/activate
+        fi
+        NUMPY_BUILD_VERSION="${{ inputs.numpy_build }}" \
+        NUMPY_DEP_VERSION="${{ inputs.numpy_dep }}" \
+        EXTRA_CFLAGS=${{ inputs.local_cflags }} \
+        EXTRA_LDFLAGS=${{ inputs.local_ldflags }} \
+        EXTRA_LIBS=${{ inputs.local_libs }} \
+          make -C native_client/python/ \
+            TARGET=${{ inputs.target }} \
+            RASPBIAN=${{ inputs.chroot }} \
+            SETUP_FLAGS="--project_name ${PROJECT_NAME}" \
+            bindings-clean bindings
+        if [ "${OS}" = "Linux" ]; then
+          deactivate
+        fi
+      shell: bash
+    - run: |
+        cp native_client/python/dist/*.whl wheels
+      shell: bash
+    - run: |
+        make -C native_client/python/ bindings-clean
       shell: bash
