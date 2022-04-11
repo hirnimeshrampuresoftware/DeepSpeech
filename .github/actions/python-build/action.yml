@@ -68,3 +68,4 @@ runs:
             cp native_client/python/dist/*.whl wheels && \
             make -C native_client/python/ bindings-clean && \
             deactivate'
+      shell: bash
