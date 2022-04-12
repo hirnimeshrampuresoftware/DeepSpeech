@@ -98,7 +98,6 @@ jobs:
               pwd && \
               ls && \
               mkdir -p build-static/ && \
-              cd build-static/ && \
               curl -sSL https://sourceforge.net/projects/pcre/files/pcre/8.43/pcre-8.43.tar.gz/download > pcre-8.43.tar.gz && \
               ./Tools/pcre-build.sh && \
               sh autogen.sh && \
