@@ -76,7 +76,7 @@ jobs:
       - uses: actions/checkout@v2
         with:
           repository: "swig/swig"
-          ref: ${{ env.swig_hash }}
+          ref: ${{ env.swig_hash }}          
       - run: |
           mkdir -p build-static/
       - uses: actions/cache@v2
@@ -84,27 +84,20 @@ jobs:
         with:
           path: build-static/
           key: swig-2-${{ runner.os }}-${{ env.swig_hash }}
-      - run: |
-          sudo apt-get install -y --no-install-recommends autoconf automake bison build-essential
+      - name: Build
         if: steps.swig-build-cache.outputs.cache-hit != 'true'
-      - run: |
-          curl -sSL https://sourceforge.net/projects/pcre/files/pcre/8.43/pcre-8.43.tar.gz/download > pcre-8.43.tar.gz
-        if: steps.swig-build-cache.outputs.cache-hit != 'true'
-      - run: |
-          ./Tools/pcre-build.sh
-        if: steps.swig-build-cache.outputs.cache-hit != 'true'
-      - run: |
-          sh autogen.sh
-          ./configure \
-            --prefix=${{ github.workspace }}/build-static/ \
-            --program-prefix=ds-
-        if: steps.swig-build-cache.outputs.cache-hit != 'true'
-      - run: |
-          make -j
-        if: steps.swig-build-cache.outputs.cache-hit != 'true'
-      - run: |
-          make install
-        if: steps.swig-build-cache.outputs.cache-hit != 'true'
+        run: |
+              docker run --rm -v ${{ github.workspace }}:/ws:rw --workdir=/ws \
+              ${{ env.img }} \
+              bash -exc 'yum install -y gcc gcc-c++ make autoconf automake bison && \
+              curl -sSL https://sourceforge.net/projects/pcre/files/pcre/8.43/pcre-8.43.tar.gz/download > pcre-8.43.tar.gz && \
+              ./Tools/pcre-build.sh && \
+              sh autogen.sh && \
+              ./configure \
+                --prefix=${{ github.workspace }}/build-static/ \
+                --program-prefix=ds- && \
+              make -j && \
+              make install && \
       - uses: actions/upload-artifact@v2
         with:
           name: ${{ github.job }}
