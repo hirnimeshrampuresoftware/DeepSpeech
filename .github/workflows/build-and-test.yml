@@ -79,13 +79,13 @@ jobs:
           ref: ${{ env.swig_hash }}          
       - run: |
           mkdir -p build-static/
-      - uses: actions/cache@v2
-        id: swig-build-cache
-        with:
-          path: build-static/
-          key: swig-2-${{ runner.os }}-${{ env.swig_hash }}
+    #  - uses: actions/cache@v2
+     #   id: swig-build-cache
+      #  with:
+       #   path: build-static/
+        #  key: swig-2-${{ runner.os }}-${{ env.swig_hash }}
       - name: Build
-        if: steps.swig-build-cache.outputs.cache-hit != 'true'
+       # if: steps.swig-build-cache.outputs.cache-hit != 'true'
         run: |
               docker run --rm -v ${{ github.workspace }}:/ws:rw --workdir=/ws \
               ${{ env.img }} \
