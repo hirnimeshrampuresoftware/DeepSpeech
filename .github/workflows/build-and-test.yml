@@ -81,7 +81,9 @@ jobs:
         id: qemu
         uses: docker/setup-qemu-action@v1          
       - run: |
+          pwd
           mkdir -p build-static/
+          ls
       - uses: actions/cache@v2
         id: swig-build-cache
         with:
@@ -93,7 +95,10 @@ jobs:
               docker run --rm -v ${{ github.workspace }}:/ws:rw --workdir=/ws \
               quay.io/pypa/manylinux2014_aarch64 \
               bash -exc 'yum install -y gcc gcc-c++ make autoconf automake bison && \
+              pwd && \
+              ls && \
               mkdir -p build-static/ && \
+              cd build-static/ && \
               curl -sSL https://sourceforge.net/projects/pcre/files/pcre/8.43/pcre-8.43.tar.gz/download > pcre-8.43.tar.gz && \
               ./Tools/pcre-build.sh && \
               sh autogen.sh && \
