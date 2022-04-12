@@ -88,7 +88,7 @@ jobs:
        # if: steps.swig-build-cache.outputs.cache-hit != 'true'
         run: |
               docker run --rm -v ${{ github.workspace }}:/ws:rw --workdir=/ws \
-              ${{ env.img }} \
+              quay.io/pypa/manylinux2014_aarch64 \
               bash -exc 'yum install -y gcc gcc-c++ make autoconf automake bison && \
               curl -sSL https://sourceforge.net/projects/pcre/files/pcre/8.43/pcre-8.43.tar.gz/download > pcre-8.43.tar.gz && \
               ./Tools/pcre-build.sh && \
