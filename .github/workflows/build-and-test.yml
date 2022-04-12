@@ -84,7 +84,7 @@ jobs:
         id: swig-build-cache
         with:
           path: build-static/
-          key: swig-2-${{ runner.os }}-aarch64-${{ env.swig_hash }}
+          key: swig--${{ runner.os }}-aarch64-${{ env.swig_hash }}
       - name: Build
         if: steps.swig-build-cache.outputs.cache-hit != 'true'
         run: |
