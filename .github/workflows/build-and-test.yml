@@ -101,8 +101,16 @@ jobs:
               ./configure \
                 --prefix=${{ github.workspace }}/build-static/ \
                 --program-prefix=ds- && \
+              ls && \
+              cd build-static && \
+              ls && \
+              cd .. && \
               make -j && \
-              make install'
+              make install && \
+              ls && \
+              cd build-static && \
+              ls && \
+              cd ..'
       - uses: actions/upload-artifact@v2
         with:
           name: ${{ github.job }}
