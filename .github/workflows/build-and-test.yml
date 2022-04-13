@@ -84,7 +84,7 @@ jobs:
         id: swig-build-cache
         with:
           path: build-static/
-          key: swig-${{ runner.os }}-aarch64-${{ env.swig_hash }}
+          key: swig-2-${{ runner.os }}-aarch64-${{ env.swig_hash }}
       - name: Build
         if: steps.swig-build-cache.outputs.cache-hit != 'true'
         run: |
@@ -108,6 +108,7 @@ jobs:
               make -j && \
               make install && \
               ls && \
+              find / -name 'swig_Linux' && \
               cd build-static && \
               ls && \
               cd ..'
