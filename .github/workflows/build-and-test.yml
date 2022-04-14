@@ -84,13 +84,13 @@ jobs:
         id: swig-build-cache
         with:
           path: build-static/
-          key: swig-3-${{ runner.os }}-aarch64-${{ env.swig_hash }}
+          key: swig-4-${{ runner.os }}-aarch64-${{ env.swig_hash }}
       - name: Build
         if: steps.swig-build-cache.outputs.cache-hit != 'true'
         run: |
-              docker run --rm -v ${{ github.workspace }}:/ws:rw --workdir=/ws \
+              docker run --rm -v `pwd`:/root:rw --workdir=/root \
               quay.io/pypa/manylinux2014_aarch64 \
-              bash -exc 'yum install -y gcc gcc-c++ make autoconf automake bison && \
+              bash -ec 'yum install -y gcc gcc-c++ make autoconf automake bison && \
               pwd && \
               ls && \
               mkdir -p build-static/ && \
@@ -103,11 +103,13 @@ jobs:
                 --program-prefix=ds- && \
               ls && \
               cd build-static && \
+              pwd && \
               ls && \
               cd .. && \
               make -j && \
               make install && \
               ls && \
+              pwd && \
               find / -name 'swig_Linux' && \
               cd build-static && \
               ls && \
