@@ -88,7 +88,7 @@ jobs:
       - name: Build
         if: steps.swig-build-cache.outputs.cache-hit != 'true'
         run: |
-              docker run --rm -v `pwd`:/root:rw --workdir=/root \
+              docker run --rm -v ${{ github.workspace }}:/ws:rw --workdir=/ws \
               quay.io/pypa/manylinux2014_aarch64 \
               bash -ec 'yum install -y gcc gcc-c++ make autoconf automake bison && \
               pwd && \
@@ -99,7 +99,7 @@ jobs:
               ./Tools/pcre-build.sh && \
               sh autogen.sh && \
               ./configure \
-                --prefix=${{ github.workspace }}/build-static/ \
+                --prefix=ws/build-static/ \
                 --program-prefix=ds- && \
               ls && \
               cd build-static && \
@@ -110,14 +110,17 @@ jobs:
               make install && \
               ls && \
               pwd && \
+              echo "!!!!!!!!!!!!!!!" && \
               find / -name 'swig_Linux' && \
+              echo "@@@@@@@@@@@@@@@@@@@"&& \
               cd build-static && \
+              echo "$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$" && \              
               ls && \
               cd ..'
       - uses: actions/upload-artifact@v2
         with:
           name: ${{ github.job }}
-          path: ${{ github.workspace }}/build-static/
+          path: ws/build-static/
   build-ctc-decoder-Linux:
     name: "Lin|Build CTC decoder Python package for testing"
     needs: [ swig_Linux ]
