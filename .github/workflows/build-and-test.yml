@@ -114,7 +114,7 @@ jobs:
               find / -name 'swig_Linux' && \
               echo "@@@@@@@@@@@@@@@@@@@"&& \
               cd build-static && \
-              echo "$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$" && \              
+              echo "$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$" && \
               ls && \
               cd ..'
       - uses: actions/upload-artifact@v2
