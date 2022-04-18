@@ -95,7 +95,7 @@ jobs:
               ls && \
               mkdir -p build-static/ && \
               ls && \
-              curl -sSL https://sourceforge.net/projects/pcre/files/pcre/8.43/pcre-8.43.tar.gz/download > pcre-8.43.tar.gz && \
+              curl -sSL https://sourceforge.net/projects/pcre/files/pcre/8.43/pcre-8.43.tar.gz/download -o pcre-8.43.tar.gz && \
               ./Tools/pcre-build.sh && \
               sh autogen.sh && \
               ./configure \
