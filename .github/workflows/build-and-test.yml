@@ -118,9 +118,9 @@ jobs:
               ls && \
               cd ..'
       - name: Upload artifacts
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
-#          name: ${{ github.job }}
+          name: ${{ github.job }}
           path: /home/runner/work/DeepSpeech/DeepSpeech/build-static/
           
   swig_Linux:
