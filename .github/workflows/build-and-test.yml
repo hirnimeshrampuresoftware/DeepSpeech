@@ -88,7 +88,7 @@ jobs:
       - name: Build
      #   if: steps.swig-build-cache.outputs.cache-hit != 'true'
         run: |
-              docker run --rm -v ${{ github.workspace }}:/ws:rw --workdir=/ws \
+              docker run --rm -v ${{ github.workspace }}:/home/runner/work/DeepSpeech/DeepSpeech:rw --workdir=/home/runner/work/DeepSpeech/DeepSpeech \
               quay.io/pypa/manylinux2014_aarch64 \
               bash -ec 'yum install -y gcc gcc-c++ make autoconf automake bison && \
               pwd && \
@@ -99,7 +99,7 @@ jobs:
               ./Tools/pcre-build.sh && \
               sh autogen.sh && \
               ./configure \
-                --prefix=${{ github.workspace }}/build-static/ && \
+                --prefix=/home/runner/work/DeepSpeech/DeepSpeech/build-static/ && \
                # --program-prefix=ds- && \
               ls && \
               cd build-static && \
