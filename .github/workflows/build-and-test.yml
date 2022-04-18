@@ -146,6 +146,7 @@ jobs:
           pwd
           ls
           cd build-static
+          echo "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%"
           ls
           cd ..
       - run: |
@@ -153,6 +154,7 @@ jobs:
           pwd
           ls
           cd build-static
+          echo "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%"
           ls
           cd ..
       - run: |
@@ -163,6 +165,7 @@ jobs:
           pwd
           ls
           cd build-static
+          echo "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%"
           ls
           cd ..
       - run: |
@@ -170,6 +173,7 @@ jobs:
           pwd
           ls
           cd build-static
+          echo "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%"
           ls
           cd ..
       - run: |
@@ -177,6 +181,7 @@ jobs:
           pwd
           ls
           cd build-static
+          echo "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%"
           ls
           cd ..
       - uses: actions/upload-artifact@v2
