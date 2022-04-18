@@ -99,8 +99,8 @@ jobs:
               ./Tools/pcre-build.sh && \
               sh autogen.sh && \
               ./configure \
-                --prefix=/home/runner/work/DeepSpeech/DeepSpeech/build-static/ && \
-               # --program-prefix=ds- && \
+                --prefix=${{ github.workspace }}/build-static/ && \
+                --program-prefix=ds- && \
               ls && \
               cd build-static && \
               pwd && \
@@ -121,7 +121,7 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: ${{ github.job }}
-          path: /home/runner/work/DeepSpeech/DeepSpeech/build-static/
+          path: ${{ github.workspace }}/build-static/
           
   swig_Linux:
     name: "Lin|Build SWIG"
@@ -2516,7 +2516,7 @@ jobs:
   build-python-LinuxAarch64:
     name: "LinAarch64|Build python bindings"
     runs-on: ubuntu-20.04
-    needs: [ build-lib_LinuxAarch64, swig_Linux, tensorflow_opt-LinuxAarch64 ]
+    needs: [ build-lib_LinuxAarch64, swig_aarch64_Linux, tensorflow_opt-LinuxAarch64 ]
     strategy:
       matrix:
         build-flavor: ["tflite"]
@@ -2546,7 +2546,7 @@ jobs:
           cd ${{ github.workspace }}/
       - uses: actions/download-artifact@v2
         with:
-          name: "swig_Linux"
+          name: "swig_aarch64_Linux"
           path: ${{ github.workspace }}/native_client/ds-swig/
       - name: Link ds-swig into swig
         run: |
