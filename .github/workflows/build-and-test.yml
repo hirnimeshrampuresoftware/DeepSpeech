@@ -99,7 +99,7 @@ jobs:
               ./Tools/pcre-build.sh && \
               sh autogen.sh && \
               ./configure \
-                --prefix=${{ github.workspace }}/build-static/ && \
+                --prefix=${{ github.workspace }}/build-static/
                 --program-prefix=ds- && \
               ls && \
               cd build-static && \
