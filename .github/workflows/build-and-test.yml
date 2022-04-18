@@ -120,7 +120,7 @@ jobs:
       - uses: actions/upload-artifact@v2
         with:
           name: ${{ github.job }}
-          path: ${{ github.workspace }}/build-static/
+          path: /home/runner/work/DeepSpeech/DeepSpeech/build-static/
           
   swig_Linux:
     name: "Lin|Build SWIG"
