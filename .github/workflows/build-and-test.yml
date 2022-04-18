@@ -113,7 +113,7 @@ jobs:
               echo "!!!!!!!!!!!!!!!" && \
               find / -name 'octcontainer.swg' && \
               echo "@@@@@@@@@@@@@@@@@@@"&& \
-              cd build-static && \
+              cd /home/runner/work/DeepSpeech/DeepSpeech/build-static/ && \
               echo "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" && \
               ls && \
               cd ..'
