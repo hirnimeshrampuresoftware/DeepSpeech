@@ -117,9 +117,10 @@ jobs:
               echo "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" && \
               ls && \
               cd ..'
-      - uses: actions/upload-artifact@v2
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v2
         with:
-          name: ${{ github.job }}
+#          name: ${{ github.job }}
           path: /home/runner/work/DeepSpeech/DeepSpeech/build-static/
           
   swig_Linux:
