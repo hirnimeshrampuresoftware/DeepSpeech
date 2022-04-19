@@ -2598,12 +2598,11 @@ jobs:
               #EXTRA_CFLAGS=${{ inputs.local_cflags }} \
               #EXTRA_LDFLAGS=${{ inputs.local_ldflags }} \
               #EXTRA_LIBS=${{ inputs.local_libs }} \
-                make -C native_client/python/ \
+              make -C native_client/python/ \
                   TARGET=${{ env.SYSTEM_TARGET }} \
                   RASPBIAN=${{ env.SYSTEM_RASPBIAN }} \
                   SETUP_FLAGS="--project_name ${PROJECT_NAME}" \
                   bindings-clean bindings && \ 
-              deactivate && \
               cp native_client/python/dist/*.whl wheels && \
               make -C native_client/python/ bindings-clean && \
               deactivate'
