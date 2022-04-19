@@ -80,43 +80,26 @@ jobs:
       - name: Set up QEMU
         id: qemu
         uses: docker/setup-qemu-action@v1          
-#      - uses: actions/cache@v2
- #       id: swig-build-cache
-  #      with:
-   #       path: build-static/
-    #      key: swig-5-${{ runner.os }}-aarch64-${{ env.swig_hash }}
+      - uses: actions/cache@v2
+        id: swig-build-cache
+        with:
+          path: build-static/
+          key: swig-2-aarch64-${{ runner.os }}-${{ env.swig_hash }}
       - name: Build
-     #   if: steps.swig-build-cache.outputs.cache-hit != 'true'
+        if: steps.swig-build-cache.outputs.cache-hit != 'true'
         run: |
               docker run --rm -v ${{ github.workspace }}:/home/runner/work/DeepSpeech/DeepSpeech:rw --workdir=/home/runner/work/DeepSpeech/DeepSpeech \
               quay.io/pypa/manylinux2014_aarch64 \
               bash -ec 'yum install -y gcc gcc-c++ make autoconf automake bison && \
-              pwd && \
-              ls && \
               mkdir -p build-static/ && \
-              ls && \
-              curl -sSL https://sourceforge.net/projects/pcre/files/pcre/8.43/pcre-8.43.tar.gz -o pcre-8.43.tar.gz && \
+              curl -sSL https://sourceforge.net/projects/pcre/files/pcre/8.43/pcre-8.43.tar.gz > pcre-8.43.tar.gz && \
               ./Tools/pcre-build.sh && \
               sh autogen.sh && \
               ./configure \
                 --prefix=${{ github.workspace }}/build-static/ \
                 --program-prefix=ds- && \
-              ls && \
-              cd build-static && \
-              pwd && \
-              ls && \
-              cd .. && \
               make -j && \
-              make install && \
-              ls && \
-              pwd && \
-              echo "!!!!!!!!!!!!!!!" && \
-              find / -name 'octcontainer.swg' && \
-              echo "@@@@@@@@@@@@@@@@@@@"&& \
-              cd /home/runner/work/DeepSpeech/DeepSpeech/build-static/ && \
-              echo "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" && \
-              ls && \
-              cd ..'
+              make install'
       - name: Upload artifacts
         uses: actions/upload-artifact@v3
         with:
@@ -135,60 +118,37 @@ jobs:
           ref: ${{ env.swig_hash }}
       - run: |
           mkdir -p build-static/
-          pwd
-          ls
-          cd build-static
-          ls
-          cd ..
+      - uses: actions/cache@v2
+        id: swig-build-cache
+        with:
+          path: build-static/
+          key: swig-2-${{ runner.os }}-${{ env.swig_hash }}
       - run: |
           sudo apt-get install -y --no-install-recommends autoconf automake bison build-essential
+        if: steps.swig-build-cache.outputs.cache-hit != 'true'
       - run: |
-          curl -sSL https://sourceforge.net/projects/pcre/files/pcre/8.43/pcre-8.43.tar.gz/download > pcre-8.43.tar.gz
-          pwd
-          ls
-          cd build-static
-          echo "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%"
-          ls
-          cd ..
+          curl -sSL https://ftp.pcre.org/pub/pcre/pcre-8.43.tar.gz > pcre-8.43.tar.gz
+        if: steps.swig-build-cache.outputs.cache-hit != 'true'
       - run: |
           ./Tools/pcre-build.sh
-          pwd
-          ls
-          cd build-static
-          echo "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%"
-          ls
-          cd ..
+        if: steps.swig-build-cache.outputs.cache-hit != 'true'
       - run: |
           sh autogen.sh
           ./configure \
             --prefix=${{ github.workspace }}/build-static/ \
             --program-prefix=ds-
-          pwd
-          ls
-          cd build-static
-          echo "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%"
-          ls
-          cd ..
+        if: steps.swig-build-cache.outputs.cache-hit != 'true'
       - run: |
           make -j
-          pwd
-          ls
-          cd build-static
-          echo "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%"
-          ls
-          cd ..
+        if: steps.swig-build-cache.outputs.cache-hit != 'true'
       - run: |
           make install
-          pwd
-          ls
-          cd build-static
-          echo "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%"
-          ls
-          cd ..
+        if: steps.swig-build-cache.outputs.cache-hit != 'true'
       - uses: actions/upload-artifact@v2
         with:
           name: ${{ github.job }}
-          path: ${{ github.workspace }}/build-static/          
+          path: ${{ github.workspace }}/build-static/
+        
   build-ctc-decoder-Linux:
     name: "Lin|Build CTC decoder Python package for testing"
     needs: [ swig_Linux ]
@@ -2585,13 +2545,16 @@ jobs:
         run: |
               docker run --rm -v ${{ github.workspace }}:/ws:rw --workdir=/ws \
               quay.io/pypa/manylinux2014_aarch64 \
-              bash -exc '/opt/python/cp37-cp37m/bin/pip install --upgrade pip && \
-              /opt/python/cp37-cp37m/bin/python --version && \
-              /opt/python/cp37-cp37m/bin/pip --version && \
-              /opt/python/cp37-cp37m/bin/python -m deepspeech-build && \
+              bash -exc '/opt/python/cp37-cp37m/bin/pip -m venv .env && \
+              source .env/bin/activate && \
+              pip install --upgrade pip && \
+              python --version && \
+              pip --version && \
+              python -m pip install virtualenv
+              python -m virtualenv deepspeech-build && \
               mkdir -p wheels && \
               set -xe && \
-              PROJECT_NAME="deepspeech-tflite" && \
+              export PROJECT_NAME="deepspeech-tflite" && \
               source deepspeech-build/bin/activate && \
               NUMPY_BUILD_VERSION="${{ steps.get_numpy.outputs.build_version }}" \
               NUMPY_DEP_VERSION="${{ steps.get_numpy.outputs.dep_version }}" \
@@ -2602,7 +2565,8 @@ jobs:
                   TARGET=${{ env.SYSTEM_TARGET }} \
                   RASPBIAN=${{ env.SYSTEM_RASPBIAN }} \
                   SETUP_FLAGS="--project_name ${PROJECT_NAME}" \
-                  bindings-clean bindings && \ 
+                  bindings-clean bindings && \
+              deactivate && \
               cp native_client/python/dist/*.whl wheels && \
               make -C native_client/python/ bindings-clean && \
               deactivate'
