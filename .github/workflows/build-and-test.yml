@@ -2558,9 +2558,9 @@ jobs:
               source deepspeech-build/bin/activate && \
               NUMPY_BUILD_VERSION="${{ steps.get_numpy.outputs.build_version }}" \
               NUMPY_DEP_VERSION="${{ steps.get_numpy.outputs.dep_version }}" \
-              #EXTRA_CFLAGS=${{ inputs.local_cflags }} \
-              #EXTRA_LDFLAGS=${{ inputs.local_ldflags }} \
-              #EXTRA_LIBS=${{ inputs.local_libs }} \
+              EXTRA_CFLAGS=${{ inputs.local_cflags }} \
+              EXTRA_LDFLAGS=${{ inputs.local_ldflags }} \
+              EXTRA_LIBS=${{ inputs.local_libs }} \
               make -C native_client/python/ \
                   TARGET=${{ env.SYSTEM_TARGET }} \
                   RASPBIAN=${{ env.SYSTEM_RASPBIAN }} \
