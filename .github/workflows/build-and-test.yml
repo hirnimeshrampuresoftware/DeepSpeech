@@ -2501,6 +2501,7 @@ jobs:
           path: ${{ github.workspace }}/tensorflow/bazel-bin/native_client/
       - run: |
           cd ${{ github.workspace }}/tensorflow/bazel-bin/native_client/
+          file native_client.tar.xz
           tar xf native_client.tar.xz
           ls -hal
           cd ${{ github.workspace }}/
