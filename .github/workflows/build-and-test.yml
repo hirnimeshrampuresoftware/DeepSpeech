@@ -2525,9 +2525,9 @@ jobs:
           path: ${{ github.workspace }}/
           download: true
         if: needs.tensorflow_opt-LinuxAarch64.outputs.status == 'found'
-#      - run: |
- #         tar -xf ${{ github.workspace }}/home.tar.xz --skip-old-files
-  #        rm ${{ github.workspace }}/home.tar.xz
+      - run: |
+          tar -xf ${{ github.workspace }}/home.tar.xz --skip-old-files
+          rm ${{ github.workspace }}/home.tar.xz
       - uses: actions/setup-python@v2
         with:
           python-version: ${{ matrix.python-version }}
