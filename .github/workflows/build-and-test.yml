@@ -2476,7 +2476,7 @@ jobs:
   build-python-LinuxAarch64:
     name: "LinAarch64|Build python bindings"
     runs-on: ubuntu-20.04
-    needs: [ build-lib_LinuxAarch64, swig_aarch64_Linux ]
+    needs: [ build-lib_LinuxAarch64, swig_aarch64_Linux, tensorflow_opt-LinuxAarch64 ]
     strategy:
       matrix:
         build-flavor: ["tflite"]
@@ -2514,17 +2514,17 @@ jobs:
           ls -hal ${{ github.workspace }}/native_client/ds-swig/bin
           ln -s ds-swig ${{ github.workspace }}/native_client/ds-swig/bin/swig
           chmod +x ${{ github.workspace }}/native_client/ds-swig/bin/ds-swig ${{ github.workspace }}/native_client/ds-swig/bin/swig
-    #  - uses: actions/download-artifact@v2
-      #  with:
-       #   name: ${{ needs.tensorflow_opt-LinuxAarch64.outputs.cache_key }}
-       #   path: ${{ github.workspace }}/
-        #if: needs.tensorflow_opt-LinuxAarch64.outputs.status == 'missing'
-  #    - uses: ./.github/actions/check_artifact_exists
-   #     with:
-    #      name: ${{ needs.tensorflow_opt-LinuxAarch64.outputs.cache_key }}
-     #     path: ${{ github.workspace }}/
-      #    download: true
-       # if: needs.tensorflow_opt-LinuxAarch64.outputs.status == 'found'
+     - uses: actions/download-artifact@v2
+        with:
+         name: ${{ needs.tensorflow_opt-LinuxAarch64.outputs.cache_key }}
+          path: ${{ github.workspace }}/
+        if: needs.tensorflow_opt-LinuxAarch64.outputs.status == 'missing'
+      - uses: ./.github/actions/check_artifact_exists
+        with:
+          name: ${{ needs.tensorflow_opt-LinuxAarch64.outputs.cache_key }}
+          path: ${{ github.workspace }}/
+          download: true
+        if: needs.tensorflow_opt-LinuxAarch64.outputs.status == 'found'
 #      - run: |
  #         tar -xf ${{ github.workspace }}/home.tar.xz --skip-old-files
   #        rm ${{ github.workspace }}/home.tar.xz
