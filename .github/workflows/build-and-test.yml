@@ -2551,6 +2551,8 @@ jobs:
               pip install --upgrade pip && \
               python --version && \
               pip3 --version && \
+              gcc --version && \
+              ldd --version && \
               python -m pip install virtualenv && \
               python -m virtualenv deepspeech-build && \
               mkdir -p wheels && \
