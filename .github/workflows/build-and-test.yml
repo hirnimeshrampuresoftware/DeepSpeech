@@ -2514,10 +2514,10 @@ jobs:
           ls -hal ${{ github.workspace }}/native_client/ds-swig/bin
           ln -s ds-swig ${{ github.workspace }}/native_client/ds-swig/bin/swig
           chmod +x ${{ github.workspace }}/native_client/ds-swig/bin/ds-swig ${{ github.workspace }}/native_client/ds-swig/bin/swig
-     - uses: actions/download-artifact@v2
+      - uses: actions/download-artifact@v2
         with:
          name: ${{ needs.tensorflow_opt-LinuxAarch64.outputs.cache_key }}
-          path: ${{ github.workspace }}/
+         path: ${{ github.workspace }}/
         if: needs.tensorflow_opt-LinuxAarch64.outputs.status == 'missing'
       - uses: ./.github/actions/check_artifact_exists
         with:
