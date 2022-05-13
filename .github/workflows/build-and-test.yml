@@ -2511,7 +2511,8 @@ jobs:
           pwd
           find . -name '*.whl'
           cd wheels
-          rename 's/manylinux_2_17_aarch64.manylinux2014/linux' *.whl
+          mv deepspeech_tflite-0.10.0a3-cp37-cp37m-linux_aarch64.whl deepspeech_tflite-0.10.0a3-cp37-cp37m-manylinux_2_17_aarch64.manylinux2014_aarch64.whl
+          #rename 's/manylinux_2_17_aarch64.manylinux2014/linux' *.whl
           cd ..
       - name: Release to pypi
         shell: bash
