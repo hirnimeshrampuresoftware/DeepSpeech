@@ -10,7 +10,7 @@ bindings-clean:
 # variables over several runs
 bindings-build: ds-swig
 	pip3 install --quiet $(PYTHON_PACKAGES) wheel==0.33.6 setuptools==45.0.0
-	DISTUTILS_USE_SDK=1 PATH=:/home/runner/work/DeepSpeech/DeepSpeech/native_client/ds-swig/bin:$PATH SWIG_LIB="/home/runner/work/DeepSpeech/DeepSpeech/native_client/ds-swig/share/swig/4.1.0/" AS=as CC=gcc CXX=c++ LD=ld CFLAGS=" " LDFLAGS="-Wl,--no-as-needed '-Wl,-rpath,\$ORIGIN/lib/' -Wl,-rpath,\$ORIGIN" MODEL_LDFLAGS="-L/home/runner/work/DeepSpeech/DeepSpeech/tensorflow/bazel-bin/native_client" MODEL_LIBS="-ldeepspeech " $(PYTHON_PATH) $(PYTHON_SYSCONFIGDATA) $(NUMPY_INCLUDE) /opt/python/cp37-cp37m/bin/python ./setup.py build_ext $(PYTHON_PLATFORM_NAME)
+	DISTUTILS_USE_SDK=1 PATH=$(TOOLCHAIN_DIR):$(DS_SWIG_BIN_PATH):$$PATH SWIG_LIB="$(SWIG_LIB)" AS=$(AS) CC=$(CC) CXX=$(CXX) LD=$(LD) CFLAGS="$(CFLAGS)" LDFLAGS="$(LDFLAGS_NEEDED) $(RPATH_PYTHON)" MODEL_LDFLAGS="$(LDFLAGS_DIRS)" MODEL_LIBS="$(LIBS)" $(PYTHON_PATH) $(PYTHON_SYSCONFIGDATA) $(NUMPY_INCLUDE) python3 ./setup.py build_ext $(PYTHON_PLATFORM_NAME)
 
 MANIFEST.in: bindings-build
 	> $@
