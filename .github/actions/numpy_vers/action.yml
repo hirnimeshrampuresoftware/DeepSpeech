@@ -27,8 +27,8 @@ runs:
             Linux:x86_64)
                 case "${{ inputs.pyver }}" in
                     3.7*)
-                        NUMPY_BUILD_VERSION="==1.19.0"
-                        NUMPY_DEP_VERSION=">=1.19.0"
+                        NUMPY_BUILD_VERSION="==1.14.5"
+                        NUMPY_DEP_VERSION=">=1.14.5"
                     ;;
                     3.8*)
                         NUMPY_BUILD_VERSION="==1.17.3"
