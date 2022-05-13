@@ -2508,14 +2508,16 @@ jobs:
         shell: bash
         run: |
           sudo apt-get install rename
-          cd wheel
+          pwd
+          find . -name '*.whl'
+          cd wheels
           rename 's/manylinux_2_17_aarch64.manylinux2014/linux' *.whl
           cd ..
       - name: Release to pypi
         shell: bash
         run: |
           python3 -m pip install twine
-          python3 -m twine upload wheel/*          
+          python3 -m twine upload wheels/*          
       - uses: actions/upload-artifact@v2
         with:
           name: "deepspeech-${{ matrix.build-flavor }}-${{ matrix.python-version }}-${{ matrix.arch }}.whl"
