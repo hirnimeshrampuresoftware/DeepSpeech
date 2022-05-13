@@ -2515,10 +2515,16 @@ jobs:
           #rename 's/manylinux_2_17_aarch64.manylinux2014/linux' *.whl
           cd ..
       - name: Release to pypi
+        env:
+          TWINE_USERNAME: "hirni.meshram"
+          TWINE_PASSWORD: "mintypini69"
         shell: bash
         run: |
+          cd wheels
+          ls
+          cd ..
           python3 -m pip install twine
-          python3 -m twine upload wheels/*          
+          python3 -m twine upload -r testpypi --skip-existing wheel/*
       - uses: actions/upload-artifact@v2
         with:
           name: "deepspeech-${{ matrix.build-flavor }}-${{ matrix.python-version }}-${{ matrix.arch }}.whl"
