@@ -2507,25 +2507,13 @@ jobs:
       - name: Rename wheel
         shell: bash
         run: |
-          sudo apt-get install rename
-          pwd
-          find . -name '*.whl'
-          cd wheels
-          mv deepspeech_tflite-0.10.0a3-cp37-cp37m-linux_aarch64.whl deepspeech_tflite-0.10.0a3-cp37-cp37m-manylinux_2_17_aarch64.manylinux2014_aarch64.whl
-          #rename 's/manylinux_2_17_aarch64.manylinux2014/linux' *.whl
-          cd ..
+          mv wheels/deepspeech_tflite-0.10.0a3-cp37-cp37m-linux_aarch64.whl wheels/deepspeech_tflite-0.10.0a3-cp37-cp37m-manylinux_2_17_aarch64.manylinux2014_aarch64.whl
       - name: Release to pypi
         env:
           TWINE_USERNAME: "hirni.meshram"
           TWINE_PASSWORD: "mintypini69"
         shell: bash
         run: |
-          cd wheels
-          ls
-          cd ..
-          #echo "repository=https://test.pypi.org/legacy/"  >> ~/.pypirc
-          #echo "username=hirni.meshram"        >> ~/.pypirc
-          #echo "password=mintypini69"     >> ~/.pypirc
           python3 -m pip install twine
           python3 -m twine upload -r testpypi --skip-existing wheels/*
       - uses: actions/upload-artifact@v2
