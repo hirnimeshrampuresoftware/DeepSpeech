@@ -2523,11 +2523,11 @@ jobs:
           cd wheels
           ls
           cd ..
-          echo "repository=https://test.pypi.org/legacy/"  >> ~/.pypirc
+          #echo "repository=https://test.pypi.org/legacy/"  >> ~/.pypirc
           #echo "username=hirni.meshram"        >> ~/.pypirc
           #echo "password=mintypini69"     >> ~/.pypirc
-          python -m pip install twine
-          python -m twine upload -r pypi --skip-existing wheels/*
+          python3 -m pip install twine
+          python3 -m twine upload -r testpypi --skip-existing wheels/*
       - uses: actions/upload-artifact@v2
         with:
           name: "deepspeech-${{ matrix.build-flavor }}-${{ matrix.python-version }}-${{ matrix.arch }}.whl"
